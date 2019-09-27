@@ -16,9 +16,10 @@
             <ul>
                 <li><a href="/">GET STARTED</a></li>
                 {% if user.is_authenticated %}
-                    <li><a href="\">LOGOUT</a></li>
+                    <li><a href="{% url 'logout' %}">LOGOUT</a></li>
                 {% else %}
-                    <li><a href="\">LOGIN</a></li>
+                    <li><a href="{% url 'login' %}">LOGIN</a></li>
+                    <li><a href="{% url 'signup' %}">SIGNUP</a></li>
                 {% endif %}
                 
             </ul>

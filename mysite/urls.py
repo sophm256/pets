@@ -23,7 +23,8 @@ from mysite import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='home'),
-    
+    url(r'^login/$', auth_views.LoginView.as_view(), name='login'),
+    url(r'^logout/$', auth_views.LogoutView.as_view(),name='logout'),
     url(r'^signup/$', core_views.signup, name='signup'),
 
 ]

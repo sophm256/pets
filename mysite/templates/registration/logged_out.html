@@ -1,0 +1,14 @@
+{% extends 'mysite/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    logged in as {{ user }}
+{% else %}
+    <h2>You are Logged Out</h2>
+{% endif %}
+
+ 
+{% endblock %}
