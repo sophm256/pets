@@ -1,0 +1,36 @@
+{% load static %}
+<html>
+    <head>
+        <title>Lost Pet</title>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Volkhov&display=swap" rel="stylesheet"> 
+        <link rel="stylesheet" href="{% static 'css/mysite.css' %}">
+    </head>
+    <body>
+        <div class="inner-body">      
+            <div class="page-header">
+                <h1><a href="/">Lost Pet</a></h1>
+            </div>
+            <div id="nav">   
+            <ul>
+                <li><a href="/">GET STARTED</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="\">LOGOUT</a></li>
+                {% else %}
+                    <li><a href="\">LOGIN</a></li>
+                {% endif %}
+                
+            </ul>
+            </div>
+            <div class="content container">
+                <div class="row">
+                    <div class="col-md-8">
+                    {% block content %}
+                    {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
