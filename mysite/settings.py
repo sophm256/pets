@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     
 ]
 
@@ -85,7 +86,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-      'ENGINE': 'django.db.backends.postgresql',
+      'ENGINE': 'django.contrib.gis.db.backends.postgis',
       'HOST': os.environ['DB_HOST'],
       'PORT': os.environ['DB_PORT'],
       'NAME': os.environ['DB_NAME'],
@@ -148,3 +149,5 @@ STATICFILES_DIRS = [
 LOGIN_REDIRECT_URL = 'home'
 
 AUTH_USER_MODEL = 'core.CustomUser'
+
+GDAL_LIBRARY_PATH = r'C:\OSGeo4W64\bin\gdal204'
