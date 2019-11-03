@@ -21,6 +21,7 @@ from mysite.core import views as core_views
 from mysite import views
 
 urlpatterns = [
+    path('chat/', include('chat.urls')),
     path('admin/', admin.site.urls),
     path('', views.index, name='home'),
     url(r'^login/$', auth_views.LoginView.as_view(), name='login'),
