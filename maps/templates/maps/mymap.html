@@ -1,0 +1,36 @@
+{% extends 'maps/base_map.html' %}
+
+{% block content %}
+    <div>
+    {% if user.is_authenticated %}
+        logged in as {{ user }}
+    {% else %}
+        <h2>You are Logged Out</h2>
+    {% endif %}
+    <p>
+    Welcome to the Maps Page!!
+    <p>
+    </div>
+    <script>    
+        function get_location() {
+            if ("geolocation" in navigator) {
+                alert("You got geolocation working on your browser!"); 
+                navigator.geolocation.getCurrentPosition(show_map);
+            } else {
+              // no native support; maybe try a fallback?
+              alert("Oh no. You don't have geolocation in your browser!");
+            }
+          }
+        
+        function show_map(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+
+            alert("Found you at latitude " + latitude +
+             ", longitude " + longitude);
+            // let's show a map or do something interesting!
+        }
+    window.onload = get_location;  
+    </script>
+    
+{% endblock %}
