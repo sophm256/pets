@@ -10,12 +10,26 @@
     <p>
     Welcome to the Maps Page!!
     <p>
+            <button id="start_tracking_button" type="button" style="visibility: hidden" onclick="start_tracking()">
+            Start Tracking
+            </button>
+            <button id="stop_tracking_button" type="button" style="visibility: hidden" onclick="stop_tracking()">
+            Stop Tracking
+            </button>
+        <div id="coordinate_list">
+            You are nowhere!
+        </div>
     </div>
-    <script>    
+    <script>
+        var coordinates = [];
+        var watch_position_id;
+       
         function get_location() {
             if ("geolocation" in navigator) {
-                alert("You got geolocation working on your browser!"); 
-                navigator.geolocation.getCurrentPosition(show_map);
+                alert("You got geolocation working on your browser!");
+                document.getElementById('start_tracking_button').style.visibility="visible";
+                document.getElementById('stop_tracking_button').setAttribute("disabled", "disabled");
+                document.getElementById('stop_tracking_button').style.visibility="visible";
             } else {
               // no native support; maybe try a fallback?
               alert("Oh no. You don't have geolocation in your browser!");
@@ -26,9 +40,33 @@
             var latitude = position.coords.latitude;
             var longitude = position.coords.longitude;
 
-            alert("Found you at latitude " + latitude +
-             ", longitude " + longitude);
+            
+
+            coordinates.push([longitude, latitude]);
+
+            var element = document.getElementById("coordinate_list");
+            element.innerHTML = "Your coordinates are:(longitude, latitude) " + JSON.stringify(coordinates);
+            
+            alert("Found you at longitude " + longitude +
+             ", latitude " + latitude);
             // let's show a map or do something interesting!
+        }
+
+        function error(err) {
+            alert('ERROR(' + err.code + '): ' + err.message);
+        }
+    
+        function start_tracking() {
+            watch_position_id = navigator.geolocation.watchPosition(show_map, error);
+            document.getElementById('stop_tracking_button').removeAttribute("disabled");
+            document.getElementById('start_tracking_button').setAttribute("disabled", "disabled");
+        }
+
+        function stop_tracking() {
+            navigator.geolocation.clearWatch(watch_position_id);
+            document.getElementById('stop_tracking_button').setAttribute("disabled", "disabled");
+            document.getElementById('start_tracking_button').removeAttribute("disabled");
+            alert("You have stopped tracking!");
         }
     window.onload = get_location;  
     </script>
