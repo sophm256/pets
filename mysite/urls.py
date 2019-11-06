@@ -19,8 +19,13 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from mysite.core import views as core_views
 from mysite import views
+from django.shortcuts import redirect
+from maps import views as map_views
+from chat import views as chat_views
 
 urlpatterns = [
+    path('maps', map_views.mymap, name='mymap'),
+    path('chat', chat_views.index, name='index'),
     path('maps/', include('maps.urls')),
     path('chat/', include('chat.urls')),
     path('admin/', admin.site.urls),
