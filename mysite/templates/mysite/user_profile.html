@@ -1,0 +1,23 @@
+{% extends 'mysite/base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        logged in as {{ user }}
+
+        <p>
+        <h1>Your Profile</h1>
+        <ul>
+        {% if user.profile_image %}
+            <li><img src="{{user.profile_image.url}}"></li>
+        {% endif %}
+            <li>username: {{user.username}}</li>
+            <li>first name: {{user.first_name}}</li>
+            <li>last name: {{user.last_name}} </li>
+            <li>email: {{user.email}}</li>
+            <li>phone: {{user.phone}}</li>        
+        </ul>
+    {% else %}
+        <h2>You are Logged Out from your Profile Page</h2>
+    {% endif %}
+    
+{% endblock %}

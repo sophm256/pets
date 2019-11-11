@@ -23,6 +23,9 @@ from django.shortcuts import redirect
 from maps import views as map_views
 from chat import views as chat_views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('maps', map_views.mymap_orig, name='mymap'),
     path('chat', chat_views.index, name='index'),
@@ -33,5 +36,6 @@ urlpatterns = [
     url(r'^login/$', auth_views.LoginView.as_view(), name='login'),
     url(r'^logout/$', auth_views.LogoutView.as_view(),name='logout'),
     url(r'^signup/$', core_views.signup, name='signup'),
+    path('user_profile/', views.user_profile, name='user_profile'),
 
-]
+] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
