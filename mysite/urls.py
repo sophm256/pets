@@ -24,7 +24,7 @@ from maps import views as map_views
 from chat import views as chat_views
 
 urlpatterns = [
-    path('maps', map_views.mymap, name='mymap'),
+    path('maps', map_views.mymap_orig, name='mymap'),
     path('chat', chat_views.index, name='index'),
     path('maps/', include('maps.urls')),
     path('chat/', include('chat.urls')),

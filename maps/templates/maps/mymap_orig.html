@@ -10,44 +10,20 @@
     <p>
     Welcome to the Maps Page!!
     <p>
-        <button id="start_tracking_button" type="button" style="visibility: hidden" onclick="start_tracking()">
+            <button id="start_tracking_button" type="button" style="visibility: hidden" onclick="start_tracking()">
             Start Tracking
-        </button>
-        <button id="stop_tracking_button" type="button" style="visibility: hidden" onclick="stop_tracking()">
+            </button>
+            <button id="stop_tracking_button" type="button" style="visibility: hidden" onclick="stop_tracking()">
             Stop Tracking
-        </button>
-        <textarea id="coordinates_thru_websockets" cols="100" rows="10"></textarea><br/>
+            </button>
         <div id="coordinate_list">
             You are nowhere!
         </div>
     </div>
-
-{% endblock %}    
-
-{% block my_javascript %}
     <script>
         var coordinates = [];
         var watch_position_id;
-        var roomName = {{ room_name_json }};
-        var mapsSocket = new WebSocket(
-            'ws://' + window.location.host +
-            '/ws/maps/' + roomName + '/');
-
-        function my_initialize(){
-            mapsSocket.onmessage = function(e) {
-            var data = JSON.parse(e.data);
-            var message = data['message'];
-            document.querySelector('#coordinates_thru_websockets').value += (message + '\n');
-            };
-
-            mapsSocket.onclose = function(e) {
-            console.error('Maps socket closed unexpectedly');
-            };
-            
-            get_location();
-        }
-
-
+       
         function get_location() {
             if ("geolocation" in navigator) {
                 alert("You got geolocation working on your browser!");
@@ -65,14 +41,8 @@
             var longitude = position.coords.longitude;
 
             
-            // adds new longitude and latitude to array on the client's browser
-            coordinates.push([longitude, latitude]);
 
-            // send new longitude and latitude to server via websockets
-            var message = [longitude,latitude]
-            mapsSocket.send(JSON.stringify({
-            'message': message
-            }));
+            coordinates.push([longitude, latitude]);
 
             var element = document.getElementById("coordinate_list");
             element.innerHTML = "Your coordinates are:(longitude, latitude) " + JSON.stringify(coordinates);
@@ -98,8 +68,7 @@
             document.getElementById('start_tracking_button').removeAttribute("disabled");
             alert("You have stopped tracking!");
         }
-    window.onload = my_initialize;  
-    
+    window.onload = get_location;  
     </script>
     
 {% endblock %}
