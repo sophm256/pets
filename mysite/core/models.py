@@ -33,6 +33,11 @@ class SearchPartyMembers(models.Model):
     member = models.ForeignKey('CustomUser', on_delete=models.SET_NULL, null=True)
    
 class TrackingCoord(models.Model):
-    search_party_members = models.ForeignKey('SearchPartyMembers', on_delete=models.CASCADE)
+    search_party_member = models.ForeignKey('SearchPartyMembers', on_delete=models.CASCADE)
     date_time = models.DateTimeField(default=timezone.now)
     my_point = models.PointField(srid=4326) 
+
+class StartEndPeriod(models.Model):
+    search_party_member = models.ForeignKey('SearchPartyMembers', on_delete=models.CASCADE)
+    datetime_start_or_end = models.DateTimeField(default=timezone.now)
+    start_or_end_type = models.SmallIntegerField # 1=start, 2=stop
