@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
-
-from mysite.core.forms import SignUpForm
+from .models import CustomUser
+from mysite.core.forms import SignUpForm, PetProfileForm
 
 
 # @login_required
@@ -23,3 +23,18 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, 'mysite/signup.html', {'form': form})
+
+@login_required
+def pet_profile_form(request):
+    
+    if request.method == "POST":
+        form = PetProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            pet = form.save(commit=False)
+            pet.owner = CustomUser.objects.get(pk=request.user.id)
+            pet.save()
+           
+            return redirect('home')
+    else:
+        form = PetProfileForm()
+    return render(request, 'mysite/pet_profile_form.html', {'form': form})

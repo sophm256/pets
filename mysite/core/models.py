@@ -15,10 +15,12 @@ class CustomUser(AbstractUser):
 class Pet(models.Model):
     profile_image = models.ImageField(upload_to='pet_images', blank=True)
     name = models.CharField(max_length=15)
-    pet_type = models.CharField(max_length=25)
+    pet_type = models.CharField(max_length=25, help_text='For example, dog or cat')
     breed = models.CharField(max_length=25, blank=True)
-    age = models.SmallIntegerField(blank=True)
-    gender = models.CharField(max_length=6, blank=True)
+    age = models.SmallIntegerField(blank=True, help_text='age in years')
+    gender = models.CharField(max_length=1, blank=True, choices = [('M','male'),('F','female')])
+    owner = models.ForeignKey('CustomUser',on_delete=models.SET_NULL, null=True)
+    
 
 class SearchInstance(models.Model):
     remarks = models.CharField(max_length=500,blank=True)

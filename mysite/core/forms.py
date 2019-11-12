@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from mysite.core.models import CustomUser
+from mysite.core.models import CustomUser, Pet
 
 
 class SignUpForm(UserCreationForm):
@@ -12,3 +12,9 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'password1', 'password2')
+
+
+class PetProfileForm(forms.ModelForm):
+    class Meta:
+        model = Pet
+        fields = ('profile_image','name','pet_type', 'breed', 'age','gender')

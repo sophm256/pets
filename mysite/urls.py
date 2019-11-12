@@ -18,6 +18,7 @@ from django.conf.urls import include, url
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from mysite.core import views as core_views
+
 from mysite import views
 from django.shortcuts import redirect
 from maps import views as map_views
@@ -37,5 +38,6 @@ urlpatterns = [
     url(r'^logout/$', auth_views.LogoutView.as_view(),name='logout'),
     url(r'^signup/$', core_views.signup, name='signup'),
     path('user_profile/', views.user_profile, name='user_profile'),
+    path('pet_profile_form/', core_views.pet_profile_form, name='pet_profile_form'),
 
 ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

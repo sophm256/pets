@@ -1,0 +1,9 @@
+{% extends 'mysite/base.html' %}
+
+{% block content %}
+    <h2>Your Pet Profile</h2>
+    <form enctype="multipart/form-data" method="POST">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+{% endblock %}
