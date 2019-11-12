@@ -17,4 +17,6 @@ class SignUpForm(UserCreationForm):
 class PetProfileForm(forms.ModelForm):
     class Meta:
         model = Pet
-        fields = ('profile_image','name','pet_type', 'breed', 'age','gender')
+        fields = ('profile_image','name','pet_type', 'remarks', 'date_last_seen', 'time_last_seen', 'last_known_location')
+         
+
