@@ -1,6 +1,7 @@
 from django.contrib.gis.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
+import datetime
 
 class CustomUser(AbstractUser):
     phone = models.CharField(max_length=15, blank=True)
@@ -13,10 +14,11 @@ class CustomUser(AbstractUser):
 
 
 class Pet(models.Model):
-    profile_image = models.ImageField(upload_to='pet_images', blank=True)
-    name = models.CharField(max_length=15)
-    pet_type = models.CharField(max_length=25, help_text='For example, dog or cat')
-    remarks = models.CharField(max_length=500,blank=True)
+    profile_image = models.ImageField('Photo of Your Pet', upload_to='pet_images', blank=True)
+    name = models.CharField('Name of Pet', max_length=15)
+    pet_type = models.CharField(max_length=25)
+
+    remarks = models.CharField(max_length=1000,blank=True)
     date_last_seen = models.DateField()
     time_last_seen = models.TimeField()
     last_known_location = models.CharField(max_length=25)

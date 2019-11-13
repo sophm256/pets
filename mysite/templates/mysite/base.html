@@ -2,10 +2,11 @@
 <html>
     <head>
         <title>Lost Pet</title>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css?family=Volkhov&display=swap" rel="stylesheet"> 
         <link rel="stylesheet" href="{% static 'css/mysite.css' %}">
+        {% block css_and_js_in_head_section %}
+        {% endblock %}
     </head>
     <body>
         <div class="inner-body">      
@@ -34,4 +35,6 @@
             </div>
         </div>
     </body>
+    {% block javascript_after_body_section %}
+    {% endblock %}
 </html>

@@ -1,4 +1,5 @@
 from django import forms
+
 from django.contrib.auth.forms import UserCreationForm
 from mysite.core.models import CustomUser, Pet
 
@@ -18,5 +19,18 @@ class PetProfileForm(forms.ModelForm):
     class Meta:
         model = Pet
         fields = ('profile_image','name','pet_type', 'remarks', 'date_last_seen', 'time_last_seen', 'last_known_location')
-         
+        widgets = {
+            'remarks': forms.Textarea(
+                attrs={'cols': 50, 'rows': 10, 
+                    'placeholder': 'Write your pet description and any special instructions here!'}),
+        }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['pet_type'].widget.attrs.update({'placeholder': 'For example, "Dog" or "Cat"'})
+        self.fields['date_last_seen'].widget.attrs.update({'id': 'date_last_seen'})
+        self.fields['time_last_seen'].widget.attrs.update({'id': 'time_last_seen', 'placeholder':'For example, "12:36 PM"'})
+        self.fields["time_last_seen"].input_formats = ['%I:%M %p',]
+        self.fields["time_last_seen"].format = '%I:%M %p'
+
+       
