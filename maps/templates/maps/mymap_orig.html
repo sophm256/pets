@@ -1,24 +1,21 @@
-{% extends 'maps/base_map.html' %}
+{% extends 'mysite/base.html' %}
 
 {% block content %}
-    <div>
-    {% if user.is_authenticated %}
-        logged in as {{ user }}
-    {% else %}
-        <h2>You are Logged Out</h2>
-    {% endif %}
-    <p>
-    Welcome to the Maps Page!!
-    <p>
+    <div class="row pt-4">
+        <div class="col-lg-8">
+        <p>
+        Welcome to the Maps Page!!
+        <p>
             <button id="start_tracking_button" type="button" style="visibility: hidden" onclick="start_tracking()">
             Start Tracking
             </button>
             <button id="stop_tracking_button" type="button" style="visibility: hidden" onclick="stop_tracking()">
             Stop Tracking
             </button>
-        <div id="coordinate_list">
-            You are nowhere!
-        </div>
+            <div id="coordinate_list">
+                You are nowhere!
+            </div>
+        </div>    
     </div>
     <script>
         var coordinates = [];

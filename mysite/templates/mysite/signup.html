@@ -1,11 +1,15 @@
 {% extends 'mysite/base.html' %}
 
 {% block content %}
-  <h2>Sign up</h2>
-  <form method="post">
-    {% csrf_token %}
-    {% include 'mysite/basic_form.html' with form=form %}
+<div class="row pt-4">
+    <div class="col-lg-6">
+      <h2>Sign up</h2>
+      <form method="post">
+        {% csrf_token %}
+        {% include 'mysite/basic_form.html' with form=form %}
 
-    <button type="submit" class="btn btn-primary">Sign up</button>
-</form>
+        <button type="submit" class="btn btn-primary">Sign up</button>
+      </form>
+</div>
+</div>
 {% endblock %}

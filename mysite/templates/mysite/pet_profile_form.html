@@ -10,13 +10,16 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Your Pet Profile</h2>
-    <form enctype="multipart/form-data" method="POST">
-        {% csrf_token %}
-        {% include 'mysite/basic_form.html' with form=form %}
-        <button type="submit" class="btn btn-primary">Next</button>
-      </form>
-
+    <div class="row pt-4">
+        <div class="col-lg-6">
+            <h2>Your Pet Profile</h2>
+            <form enctype="multipart/form-data" method="POST">
+                {% csrf_token %}
+                {% include 'mysite/basic_form.html' with form=form %}
+                <button type="submit" class="btn btn-primary">Next</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascript_after_body_section %}

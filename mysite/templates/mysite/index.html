@@ -1,11 +1,26 @@
 {% extends 'mysite/base.html' %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        logged in as {{ user }}
-    {% else %}
-        <h2>You are Logged Out</h2>
-    {% endif %}
-    <p>
-    Welcome to my corner of the world!!!
+<div class="row pt-4">
+      <!-- left column -->
+      <div class="col-lg-6 mb-4" style="text-align: center">
+      <!-- page content -->
+      {% load static %}
+      <img src="{% static 'mysite/dog_front_page.jpg' %}" height="400" alt="brown dog">  
+      </div>
+      
+      <!-- right column -->
+      <div class="col-lg-6 mb-4 mt-4" style="font-size:160%;" >
+        
+        <b>Pet Search Party</b> helps you find missing pets when you go searching for them on the street. 
+        It keeps track of where you and your search party have searched on one map. 
+        This way you know where to look next.
+        <p>
+
+        <div class="text-center">
+          <a class="btn btn-lg btn-primary" href="#">Get Started</a>
+        </div>
+      </div>
+    </div>
+
 {% endblock %}

@@ -3,12 +3,15 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
+<div class="row pt-4">
+    <div class="col-lg-6">
+    {% if user.is_authenticated %}
+        logged in as {{ user }}
+    {% else %}
+        <h2>You are Logged Out</h2>
+    {% endif %}
 
-{% if user.is_authenticated %}
-    logged in as {{ user }}
-{% else %}
-    <h2>You are Logged Out</h2>
-{% endif %}
-
+    </div>
+</div>
  
 {% endblock %}
