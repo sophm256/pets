@@ -1,0 +1,48 @@
+{% extends 'mysite/base.html' %}
+
+{% block content %}
+<div class="row pt-4">
+    <div class="col-lg-6">
+      <h2>Missing {{pet.pet_type}}</h2>
+      {% if pet.profile_image %}
+          <img src="{{pet.profile_image.url}}">
+      {% endif %}
+      <p>
+      <b>Name:</b> {{pet.name}}
+      <p>      
+      <b>Date Last Seen:</b> {{pet.date_last_seen}}
+      <p>
+      <b>Time Last Seen:</b> {{pet.time_last_seen}} 
+      <p>
+      <b>Last Known Location:</b> {{pet.last_known_location}}
+      <p>
+      <b>Remarks:</b> {{pet.remarks}}
+      <p>  
+      <b>Owner:</b> {{owner.username}}
+      <p>
+      {% if owner.profile_image %}
+        <img src="{{owner.profile_image.url}}" height="100 px">
+      {% endif %}
+      <p>  
+      {% for member in members %}
+        member: {{member}} <br>
+      {% endfor %}
+
+      {% if user.username in members %}
+            <a href="{% url 'mymap_slash' room_name=pk %}" class="btn btn-primary">You're a Member. Join Search Party</a>
+      {% else %}
+            You're not a member
+            <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" id="adding_member" name="adding_member" value="{{user.username}}">
+            <input type="hidden" id="pk_instance" name="pk_instance" value="{{pk}}">
+            <button type="submit" class="btn btn-primary">Sign In</button>
+            </form>
+      {% endif %}
+
+      
+ 
+      
+</div>
+</div>
+{% endblock %}

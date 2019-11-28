@@ -39,5 +39,6 @@ urlpatterns = [
     url(r'^signup/$', core_views.signup, name='signup'),
     path('user_profile/', views.user_profile, name='user_profile'),
     path('pet_profile_form/', core_views.pet_profile_form, name='pet_profile_form'),
-
+    path('triage/', core_views.triage, name='triage'),
+    path('search_party_flyer/<int:pk>/', core_views.search_party_flyer, name='search_party_flyer'),
 ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

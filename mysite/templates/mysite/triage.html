@@ -1,0 +1,29 @@
+{% extends 'mysite/base.html' %}
+
+{% block content %}
+<div class="row pt-4">
+      <!-- left column -->
+      <div class="col-lg-6 mb-4" style="text-align: center; background-color: #dbf8ff ">
+      <!-- page content -->
+      <h1>Lost a Pet?</h1>
+       You have no current search parties.
+
+       Here are your current search parties:
+      
+       <a href="{% url 'pet_profile_form' %}" class="btn btn-primary">Create New Search Party</a>
+      </div>
+      
+      <!-- right column -->
+      <div class="col-lg-6 mb-4" style="text-align: center; font-size:100%; background-color:#fff8c6 " >
+        
+        <h1>Want to help others <br> look for a pet?</h1>
+       
+            <a href="#" class="btn btn-primary">Yes</a>
+            
+        </form>
+        
+       
+      </div>
+    </div>
+
+{% endblock %}

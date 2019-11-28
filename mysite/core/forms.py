@@ -22,13 +22,13 @@ class PetProfileForm(forms.ModelForm):
         widgets = {
             'remarks': forms.Textarea(
                 attrs={'cols': 50, 'rows': 10, 
-                    'placeholder': 'Write your pet description and any special instructions here!'}),
+                    'placeholder': 'Write your pet description and any special instructions here! Include how they should contact you.'}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['pet_type'].widget.attrs.update({'placeholder': 'For example, "Dog" or "Cat"'})
-        self.fields['date_last_seen'].widget.attrs.update({'id': 'date_last_seen'})
+        self.fields['date_last_seen'].widget.attrs.update({'id': 'date_last_seen', 'placeholder':'For example, "1/20/2019"'})
         self.fields['time_last_seen'].widget.attrs.update({'id': 'time_last_seen', 'placeholder':'For example, "12:36 PM"'})
         self.fields["time_last_seen"].input_formats = ['%I:%M %p',]
         self.fields["time_last_seen"].format = '%I:%M %p'
