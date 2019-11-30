@@ -27,6 +27,12 @@
                 Stop Tracking
             </button>
             <textarea id="coordinates_thru_websockets" cols="100" rows="10"></textarea><br/>
+            
+            <div id="start_stop_time">
+                Start Stop Time here
+            </div>
+
+            COORDINATES:
             <div id="coordinate_list">
                 You are nowhere!
             </div>
@@ -38,6 +44,7 @@
 
 {% block javascript_after_body_section %}
     <script>
+        var start_stop_times=[];
         var coordinates = [];
         var watch_position_id;
         var roomName = {{ room_name_json }};
@@ -106,11 +113,19 @@
             // adds new longitude and latitude to array on the client's browser
             coordinates.push([longitude, latitude]);
 
+     
             // send new longitude and latitude to server via websockets
             var coord = [longitude,latitude]
+        
+            var time_stamp = new Date().getTime()/1000;
+            
+
             mapsSocket.send(JSON.stringify({
-                'username': "{{user}}",
-                'coord': coord
+                'message_type': "coordinate",
+                'username': "{{user.username}}",
+                'coord': coord,
+                'search_party_instance_id': "{{room_name}}",
+                'time_stamp' : time_stamp
             }));
 
             var element = document.getElementById("coordinate_list");
@@ -164,6 +179,21 @@
             watch_position_id = navigator.geolocation.watchPosition(show_map, error);
             document.getElementById('stop_tracking_button').removeAttribute("disabled");
             document.getElementById('start_tracking_button').setAttribute("disabled", "disabled");
+            
+            var date = new Date();
+            var time_stamp = date.getTime()/1000;
+            var human_date_time = convert_date_to_human_date_time(date);
+
+            start_stop_times.push([1, time_stamp, human_date_time]);
+            var element = document.getElementById("start_stop_time");
+            element.innerHTML = "Start" + JSON.stringify(start_stop_times);
+
+            mapsSocket.send(JSON.stringify({
+                'message_type': "start_tracking",
+                'username': "{{user.username}}",
+                'search_party_instance_id': "{{room_name}}",
+                'time_stamp' : time_stamp
+            }));
         }
 
         function stop_tracking() {
@@ -171,9 +201,32 @@
             document.getElementById('stop_tracking_button').setAttribute("disabled", "disabled");
             document.getElementById('start_tracking_button').removeAttribute("disabled");
             
+            var date = new Date();
+            var time_stamp = date.getTime()/1000;
+            
+           
+            var human_date_time = convert_date_to_human_date_time(date); 
+            start_stop_times.push([2, time_stamp, human_date_time]);
+            var element = document.getElementById("start_stop_time");
+            element.innerHTML = "Stop" + JSON.stringify(start_stop_times);
+
+            mapsSocket.send(JSON.stringify({
+                'message_type': "stop_tracking",
+                'username': "{{user.username}}",
+                'search_party_instance_id': "{{room_name}}",
+                'time_stamp' : time_stamp
+            }));
+
             alert("You have stopped tracking!");
 
         }
+
+        function convert_date_to_human_date_time(date) {
+            var human_date_time = (date.getMonth()+1).toString() + '-' + date.getDate().toString() + '-' + date.getFullYear().toString() 
+                  + ' -- ' + date.getHours().toString() + ':' + date.getMinutes().toString() + ': ' + date.getSeconds().toString(); 
+            return human_date_time;
+        }
+
     window.onload = my_initialize;  
     
     </script>
