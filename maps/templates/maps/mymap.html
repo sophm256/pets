@@ -45,7 +45,8 @@
 {% block javascript_after_body_section %}
     <script>
         var start_stop_times=[];
-        var coordinates = [];
+        var browser_coordinates = [];
+        var coordinates_from_server =[];
         var watch_position_id;
         var roomName = {{ room_name_json }};
         var mapsSocket = new WebSocket(
@@ -63,10 +64,49 @@
             mapsSocket.onmessage = function(e) {
             var data = JSON.parse(e.data);
             var username = data['username'];
-            var coordinates = data['coordinates'];
+            coordinates_from_server = data['coordinates'];
             //document.querySelector('#coordinates_thru_websockets').value += (message + '\n');
             document.querySelector('#coordinates_thru_websockets').value += (username + '\n');
-            document.querySelector('#coordinates_thru_websockets').value += (JSON.stringify(coordinates) + '\n');
+            document.querySelector('#coordinates_thru_websockets').value += (JSON.stringify(coordinates_from_server) + '\n');
+            
+            most_recent_coordinate = coordinates_from_server[coordinates_from_server.length-1]
+            var latitude = most_recent_coordinate[1]
+            var longitude = most_recent_coordinate[0]
+            window.lat = latitude;
+            window.lng = longitude;
+
+            map.flyTo({center:[lng,lat]});
+            mark.setLngLat([lng,lat]);
+
+                if (map.getSource(geojson_line_id)) {
+                    map.removeLayer(geojson_line_id);
+                    map.removeSource(geojson_line_id);
+                }
+                map.addLayer({
+                    "id": geojson_line_id,
+                    "type": "line",
+                    "source": {
+                        "type": "geojson",
+                        "data": {
+                        "type": "Feature",
+                        "properties": {},
+                        "geometry": {
+                            "type": "LineString",
+                            "coordinates": coordinates_from_server
+                            }
+                        }
+                    },
+                    "layout": {
+                    "line-join": "round",
+                    "line-cap": "round"
+                    },
+                    "paint": {
+                    "line-color": "#888",
+                    "line-width": 8
+                    }
+                });
+            
+            
             };
 
             mapsSocket.onclose = function(e) {
@@ -111,15 +151,18 @@
 
             
             // adds new longitude and latitude to array on the client's browser
-            coordinates.push([longitude, latitude]);
+            browser_coordinates.push([longitude, latitude]);
 
-     
-            // send new longitude and latitude to server via websockets
-            var coord = [longitude,latitude]
+            var element = document.getElementById("coordinate_list");
+            element.innerHTML = "Your coordinates are:(longitude, latitude) " + JSON.stringify(browser_coordinates);
+            
+            
         
             if ((longitude == window.lng) && (latitude == window.lat)){
                 // Do nothing since user hasn't moved
             } else {
+                // send new longitude and latitude to server via websockets
+                var coord = [longitude,latitude]
                 var time_stamp = new Date().getTime()/1000;
             
 
@@ -131,47 +174,14 @@
                     'time_stamp' : time_stamp
                 }));
 
-                var element = document.getElementById("coordinate_list");
-                element.innerHTML = "Your coordinates are:(longitude, latitude) " + JSON.stringify(coordinates);
-            
+               
+            }
             //alert("Found you at longitude " + longitude + ", latitude " + latitude);
             
             // let's show a map or do something interesting!
 
-                window.lat = latitude;
-                window.lng = longitude;
-
-                map.flyTo({center:[lng,lat]});
-                mark.setLngLat([lng,lat]);
-
-                if (map.getSource(geojson_line_id)) {
-                    map.removeLayer(geojson_line_id);
-                    map.removeSource(geojson_line_id);
-                }
-                map.addLayer({
-                    "id": geojson_line_id,
-                    "type": "line",
-                    "source": {
-                        "type": "geojson",
-                        "data": {
-                        "type": "Feature",
-                        "properties": {},
-                        "geometry": {
-                            "type": "LineString",
-                            "coordinates": coordinates
-                            }
-                        }
-                    },
-                    "layout": {
-                    "line-join": "round",
-                    "line-cap": "round"
-                    },
-                    "paint": {
-                    "line-color": "#888",
-                    "line-width": 8
-                    }
-                });
-            }
+               
+            
         }
 
         function error(err) {
