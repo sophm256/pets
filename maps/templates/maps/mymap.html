@@ -117,58 +117,61 @@
             // send new longitude and latitude to server via websockets
             var coord = [longitude,latitude]
         
-            var time_stamp = new Date().getTime()/1000;
+            if ((longitude == window.lng) && (latitude == window.lat)){
+                // Do nothing since user hasn't moved
+            } else {
+                var time_stamp = new Date().getTime()/1000;
             
 
-            mapsSocket.send(JSON.stringify({
-                'message_type': "coordinate",
-                'username': "{{user.username}}",
-                'coord': coord,
-                'search_party_instance_id': "{{room_name}}",
-                'time_stamp' : time_stamp
-            }));
+                mapsSocket.send(JSON.stringify({
+                    'message_type': "coordinate",
+                    'username': "{{user.username}}",
+                    'coord': coord,
+                    'search_party_instance_id': "{{room_name}}",
+                    'time_stamp' : time_stamp
+                }));
 
-            var element = document.getElementById("coordinate_list");
-            element.innerHTML = "Your coordinates are:(longitude, latitude) " + JSON.stringify(coordinates);
+                var element = document.getElementById("coordinate_list");
+                element.innerHTML = "Your coordinates are:(longitude, latitude) " + JSON.stringify(coordinates);
             
             //alert("Found you at longitude " + longitude + ", latitude " + latitude);
             
             // let's show a map or do something interesting!
 
-            window.lat = latitude;
-            window.lng = longitude;
+                window.lat = latitude;
+                window.lng = longitude;
 
-            map.flyTo({center:[lng,lat]});
-            mark.setLngLat([lng,lat]);
+                map.flyTo({center:[lng,lat]});
+                mark.setLngLat([lng,lat]);
 
-            if (map.getSource(geojson_line_id)) {
-            map.removeLayer(geojson_line_id);
-            map.removeSource(geojson_line_id);
-            }
-            map.addLayer({
-                "id": geojson_line_id,
-                "type": "line",
-                "source": {
-                    "type": "geojson",
-                    "data": {
-                    "type": "Feature",
-                    "properties": {},
-                    "geometry": {
-                    "type": "LineString",
-                    "coordinates": coordinates
+                if (map.getSource(geojson_line_id)) {
+                    map.removeLayer(geojson_line_id);
+                    map.removeSource(geojson_line_id);
                 }
+                map.addLayer({
+                    "id": geojson_line_id,
+                    "type": "line",
+                    "source": {
+                        "type": "geojson",
+                        "data": {
+                        "type": "Feature",
+                        "properties": {},
+                        "geometry": {
+                            "type": "LineString",
+                            "coordinates": coordinates
+                            }
+                        }
+                    },
+                    "layout": {
+                    "line-join": "round",
+                    "line-cap": "round"
+                    },
+                    "paint": {
+                    "line-color": "#888",
+                    "line-width": 8
+                    }
+                });
             }
-        },
-                "layout": {
-                "line-join": "round",
-                "line-cap": "round"
-                },
-                "paint": {
-                "line-color": "#888",
-                "line-width": 8
-                }
-            });
-
         }
 
         function error(err) {

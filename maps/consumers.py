@@ -2,7 +2,8 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 import json
 from mysite.core.models import TrackingCoord, StartStopTime, CustomUser, SearchPartyInstance, SearchPartyMembers
-from django.contrib.gis.geos import fromstr
+from django.contrib.gis.geos import fromstr, Point
+
 import datetime
 
 class MapsConsumer(WebsocketConsumer):
@@ -69,7 +70,8 @@ class MapsConsumer(WebsocketConsumer):
 
         # Get all of the coordinates for that particular member from the database
         #TODO
-        #TrackingCoord.objects.
+        tracking_coords = TrackingCoord.objects.filter(search_party_member=membership)
+        point_coord = [tracking_coord.my_point.coords for tracking_coord in tracking_coords]
 
         # self.addToDict(username,coord)
 
@@ -80,7 +82,7 @@ class MapsConsumer(WebsocketConsumer):
                 'type': 'chat_message',
                 'username': username,
                 #TODO 'coordinates': self.coord_dict[username]
-                'coordinates': [4,5]
+                'coordinates': point_coord
             }
         )
 
