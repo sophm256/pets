@@ -58,13 +58,24 @@
         window.lng = -87.628228;
         var map;
         var mark;
-        var geojson_line_id = "route";
+        
+        var colors = [["#a51300","red"],["#23cd02", "green"],["a80aaa", "purple"],["#888", "grey"]]; 
+        var color_key = {};
+        var color_position = 0;
 
         function my_initialize(){
             mapsSocket.onmessage = function(e) {
             var data = JSON.parse(e.data);
             var username = data['username'];
             coordinates_from_server = data['coordinates'];
+            var geojson_line_id = username;
+            
+            if (username in color_key) {
+                color = color_key[username];
+            } else {
+                color = getNextColor();
+                color_key[username] = color;
+            }
             //document.querySelector('#coordinates_thru_websockets').value += (message + '\n');
             document.querySelector('#coordinates_thru_websockets').value += (username + '\n');
             document.querySelector('#coordinates_thru_websockets').value += (JSON.stringify(coordinates_from_server) + '\n');
@@ -101,7 +112,7 @@
                     "line-cap": "round"
                     },
                     "paint": {
-                    "line-color": "#888",
+                    "line-color": color,
                     "line-width": 8
                     }
                 });
@@ -240,6 +251,14 @@
             return human_date_time;
         }
 
+        function getNextColor(){
+            alert("color_position" + color_position);
+            var color = colors[color_position % colors.length][0];
+            alert("color" + color);
+            color_position += 1;
+            alert("color_position" + color_position);
+            return color;
+        }
     window.onload = my_initialize;  
     
     </script>
