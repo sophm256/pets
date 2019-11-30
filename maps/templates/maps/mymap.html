@@ -80,11 +80,10 @@
             document.querySelector('#coordinates_thru_websockets').value += (username + '\n');
             document.querySelector('#coordinates_thru_websockets').value += (JSON.stringify(coordinates_from_server) + '\n');
             
-            most_recent_coordinate = coordinates_from_server[coordinates_from_server.length-1]
-            var latitude = most_recent_coordinate[1]
-            var longitude = most_recent_coordinate[0]
-            window.lat = latitude;
-            window.lng = longitude;
+           // most_recent_coordinate = coordinates_from_server[coordinates_from_server.length-1]
+           // var latitude = most_recent_coordinate[1]
+           // var longitude = most_recent_coordinate[0]
+            
 
             map.flyTo({center:[lng,lat]});
             mark.setLngLat([lng,lat]);
@@ -176,6 +175,8 @@
                 var coord = [longitude,latitude]
                 var time_stamp = new Date().getTime()/1000;
             
+                window.lat = latitude;
+                window.lng = longitude;
 
                 mapsSocket.send(JSON.stringify({
                     'message_type': "coordinate",
@@ -252,11 +253,11 @@
         }
 
         function getNextColor(){
-            alert("color_position" + color_position);
+            //alert("color_position" + color_position);
             var color = colors[color_position % colors.length][0];
-            alert("color" + color);
+            //alert("color" + color);
             color_position += 1;
-            alert("color_position" + color_position);
+            //alert("color_position" + color_position);
             return color;
         }
     window.onload = my_initialize;  
