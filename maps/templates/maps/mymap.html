@@ -74,60 +74,60 @@
             var single_or_all_users = data['single_or_all_users'];      
             
             console.log("username: " + username + ", single_or_all_users: " + single_or_all_users + ", coord: " + coordinates_from_server);  
-            if (username in color_key) {
-                color = color_key[username];
-                console.log(color);
-            } else {
-                if (username == "{{user.username}}"){
-                    color = color_of_current_user[0];
+          
+            if (coordinates_from_server != "") {
+                if (username in color_key) {
+                    color = color_key[username];
                     console.log(color);
                 } else {
-                    color = getNextColor();
-                    console.log(color);
-                    
-                }
-                color_key[username] = color;
-            }
-            //document.querySelector('#coordinates_thru_websockets').value += (message + '\n');
-            document.querySelector('#coordinates_thru_websockets').value += (username + '\n');
-            document.querySelector('#coordinates_thru_websockets').value += (JSON.stringify(coordinates_from_server) + '\n');
-            
-           // most_recent_coordinate = coordinates_from_server[coordinates_from_server.length-1]
-           // var latitude = most_recent_coordinate[1]
-           // var longitude = most_recent_coordinate[0]
-            
-
-            map.flyTo({center:[lng,lat]});
-            mark.setLngLat([lng,lat]);
-
-                if (map.getSource(geojson_line_id)) {
-                    map.removeLayer(geojson_line_id);
-                    map.removeSource(geojson_line_id);
-                }
-                map.addLayer({
-                    "id": geojson_line_id,
-                    "type": "line",
-                    "source": {
-                        "type": "geojson",
-                        "data": {
-                        "type": "Feature",
-                        "properties": {},
-                        "geometry": {
-                            "type": "LineString",
-                            "coordinates": coordinates_from_server
-                            }
-                        }
-                    },
-                    "layout": {
-                    "line-join": "round",
-                    "line-cap": "round"
-                    },
-                    "paint": {
-                    "line-color": color,
-                    "line-width": 8
+                    if (username == "{{user.username}}"){
+                        color = color_of_current_user[0];
+                        console.log(color);
+                    } else {
+                        color = getNextColor();
+                        console.log(color);
+                        
                     }
-                });
+                    color_key[username] = color;
+                }
+                
+                document.querySelector('#coordinates_thru_websockets').value += (username + '\n');
+                document.querySelector('#coordinates_thru_websockets').value += (JSON.stringify(coordinates_from_server) + '\n');
+                
             
+                
+
+                map.flyTo({center:[lng,lat]});
+                mark.setLngLat([lng,lat]);
+
+                    if (map.getSource(geojson_line_id)) {
+                        map.removeLayer(geojson_line_id);
+                        map.removeSource(geojson_line_id);
+                    }
+                    map.addLayer({
+                        "id": geojson_line_id,
+                        "type": "line",
+                        "source": {
+                            "type": "geojson",
+                            "data": {
+                            "type": "Feature",
+                            "properties": {},
+                            "geometry": {
+                                "type": "LineString",
+                                "coordinates": coordinates_from_server
+                                }
+                            }
+                        },
+                        "layout": {
+                        "line-join": "round",
+                        "line-cap": "round"
+                        },
+                        "paint": {
+                        "line-color": color,
+                        "line-width": 8
+                        }
+                    });
+                }
             
             };
 
@@ -200,12 +200,7 @@
 
                
             }
-            //alert("Found you at longitude " + longitude + ", latitude " + latitude);
-            
-            // let's show a map or do something interesting!
-
-               
-            
+   
         }
 
         function error(err) {
@@ -277,11 +272,8 @@
         }
 
         function getNextColor(){
-            //alert("color_position" + color_position);
             var color = colors[color_position % colors.length][0];
-            //alert("color" + color);
             color_position += 1;
-            //alert("color_position" + color_position);
             return color;
         }
     window.onload = my_initialize;  
