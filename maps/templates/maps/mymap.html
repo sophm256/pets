@@ -59,9 +59,11 @@
         var map;
         var mark;
         
-        var colors = [["#a51300","red"],["#23cd02", "green"],["a80aaa", "purple"],["#888", "grey"]]; 
+        var color_of_current_user = ["#a51300","red"];
+        var colors = [["#23cd02", "green"],["#a80aaa", "purple"],["#888", "grey"]]; 
         var color_key = {};
         var color_position = 0;
+        var get_everyones_path = true;
 
         function my_initialize(){
             mapsSocket.onmessage = function(e) {
@@ -69,11 +71,21 @@
             var username = data['username'];
             coordinates_from_server = data['coordinates'];
             var geojson_line_id = username;
+            var single_or_all_users = data['single_or_all_users'];      
             
+            console.log("username: " + username + ", single_or_all_users: " + single_or_all_users + ", coord: " + coordinates_from_server);  
             if (username in color_key) {
                 color = color_key[username];
+                console.log(color);
             } else {
-                color = getNextColor();
+                if (username == "{{user.username}}"){
+                    color = color_of_current_user[0];
+                    console.log(color);
+                } else {
+                    color = getNextColor();
+                    console.log(color);
+                    
+                }
                 color_key[username] = color;
             }
             //document.querySelector('#coordinates_thru_websockets').value += (message + '\n');
@@ -219,6 +231,18 @@
                 'search_party_instance_id': "{{room_name}}",
                 'time_stamp' : time_stamp
             }));
+
+            if (get_everyones_path) {
+
+                mapsSocket.send(JSON.stringify({
+                    'message_type': "get_everyones_paths",
+                    'username': "{{user.username}}",
+                    'search_party_instance_id': "{{room_name}}",
+                    'time_stamp' : time_stamp
+                }));
+
+                get_everyones_path = false;
+            }
         }
 
         function stop_tracking() {
