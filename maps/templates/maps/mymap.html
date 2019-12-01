@@ -13,12 +13,17 @@
     <div class="row pt-4">
         <div class="col-lg-8">
   
-            Welcome to the Maps Page!!
-            Hi {{my_test_var}}
+            Welcome to the Map Page -- {{user}}!
+         
             
             <p>
             
-            <div id='map' style='width: 400px; height: 300px;'></div>
+            <div id='map' style="width:450px; height:300px"></div>
+
+            <p>
+            <!--    
+            <div class='map-overlay' id='legend'></div>
+            -->
             <p>
             <button id="start_tracking_button" class="btn btn-lg btn-primary" type="button" style="visibility: hidden" onclick="start_tracking()">
                 Start Tracking
@@ -64,8 +69,12 @@
         var color_key = {};
         var color_position = 0;
         var get_everyones_path = true;
-
+        
+       
+    
         function my_initialize(){
+            initialize_mapbox();
+
             mapsSocket.onmessage = function(e) {
             var data = JSON.parse(e.data);
             var username = data['username'];
@@ -90,13 +99,36 @@
                     }
                     color_key[username] = color;
                 }
+
+                // Create a legend for the map
                 
+                /* Object.entries(color_key).forEach(([key, value]) => {
+                    var my_username = key;
+                    if (my_username == "{{user.username}}"){
+                        my_username += " (you)";
+                    }
+                    var color = value;
+
+                    var item = document.createElement('div');
+                    var key = document.createElement('span');
+                    key.className = 'legend-key';
+                    key.style.backgroundColor = color;
+
+                    var value = document.createElement('span');
+                    value.innerHTML = my_username;
+                    item.appendChild(key);
+                    item.appendChild(value);
+                    legend.appendChild(item);
+                
+                }); */
+
                 document.querySelector('#coordinates_thru_websockets').value += (username + '\n');
                 document.querySelector('#coordinates_thru_websockets').value += (JSON.stringify(coordinates_from_server) + '\n');
                 
             
                 
-
+                
+                   
                 map.flyTo({center:[lng,lat]});
                 mark.setLngLat([lng,lat]);
 
@@ -127,6 +159,7 @@
                         "line-width": 8
                         }
                     });
+                
                 }
             
             };
@@ -137,7 +170,7 @@
             
             get_location();
 
-            initialize_mapbox();
+            
         }
 
         function initialize_mapbox() {
@@ -148,12 +181,14 @@
                 center: [lng, lat], // starting position as [lng, lat]
                 zoom: 15
             });
-
-            mark = new mapboxgl.Marker()
-                .setLngLat([lng, lat]) // [lng, lat] coordinates to place the marker at
-                .addTo(map); // add the marker to the map
-      
-            alert('We have been initialized');
+            
+            map.on('load', function(){
+                 mark = new mapboxgl.Marker()
+                    .setLngLat([lng, lat]) // [lng, lat] coordinates to place the marker at
+                    .addTo(map); // add the marker to the map
+                alert('Mapbox has been loaded');
+            })
+            
         }
         function get_location() {
             if ("geolocation" in navigator) {
