@@ -58,19 +58,22 @@ def triage(request):
         if form.is_valid():
             
             username = form.cleaned_data.get('search_by_username')
+            custom_user = None
+            pets_and_search_party_instance =[]
             try:
                 
                 custom_user = CustomUser.objects.get(username = username)
                 pets = Pet.objects.filter(owner=custom_user)
-                pets_and_search_party_instance = []
+                
                 for pet in pets:
                     search_party_instance = SearchPartyInstance.objects.get(owner=custom_user,pet=pet)
                     pets_and_search_party_instance.append([pet,search_party_instance.pk])
                 form = SearchForOwnerForm()
+                found_owner = True
             except ObjectDoesNotExist:
                 found_owner = False
             
-            found_owner = True
+            
             return render(request, 'mysite/triage.html', {'form': form,'found_owner': found_owner,'owner':custom_user, 'pets_and_search_party_instance':pets_and_search_party_instance })
     else:
         form = SearchForOwnerForm()
