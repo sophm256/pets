@@ -72,12 +72,13 @@ def triage(request):
                 found_owner = True
             except ObjectDoesNotExist:
                 found_owner = False
+            form_is_bound = "true"
             
-            
-            return render(request, 'mysite/triage.html', {'form': form,'found_owner': found_owner,'owner':custom_user, 'pets_and_search_party_instance':pets_and_search_party_instance })
+            return render(request, 'mysite/triage.html', {'form': form,'found_owner': found_owner,'owner':custom_user, 'pets_and_search_party_instance':pets_and_search_party_instance, 'form_is_bound': form_is_bound })
     else:
         form = SearchForOwnerForm()
-        return render(request, 'mysite/triage.html', {'form': form})
+        form_is_bound = "false"
+        return render(request, 'mysite/triage.html', {'form': form, 'form_is_bound': form_is_bound})
 
    
 

@@ -13,6 +13,7 @@ def mymap_orig(request):
 #IMPORTANT:Should we be marking it safe??
 @login_required
 def mymap(request, room_name):
+    
     return render(request, 'maps/mymap.html', {
         'room_name_json': mark_safe(json.dumps(room_name)),
         'room_name': str(room_name),

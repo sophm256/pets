@@ -29,14 +29,14 @@
       {% endfor %}
 
       {% if user.username in members %}
-            <a href="{% url 'mymap_slash' room_name=pk %}" class="btn btn-primary">You're a Member. Join Search Party</a>
+            <a href="{% url 'mymap_slash' room_name=pk %}" class="btn btn-primary">You're a Member in the Search Party. Start Searching</a>
       {% else %}
-            You're not a member
+            You're not a member in the Search Party yet.
             <form method="POST">
             {% csrf_token %}
             <input type="hidden" id="adding_member" name="adding_member" value="{{user.username}}">
             <input type="hidden" id="pk_instance" name="pk_instance" value="{{pk}}">
-            <button type="submit" class="btn btn-primary">Sign In</button>
+            <button type="submit" class="btn btn-primary">Join the Search Party</button>
             </form>
       {% endif %}
 

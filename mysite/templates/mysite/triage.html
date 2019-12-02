@@ -26,36 +26,91 @@
             </form>
             
 
-            <h2>Results of Search:</h2>
-            {% if found_owner %}
-               
-                {% if owner.profile_image %}
-                    <img src="{{owner.profile_image.url}}" height="100px">
-                {% endif %}  
-                    {{owner.username}}
-                    <p>
-                  
-                {% if pets_and_search_party_instance %}
-                    {% for pair in pets_and_search_party_instance%}
-                  
-                    
-                        {% if pair.0.profile_image %}
-                           <img src="{{pair.0.profile_image.url}}" height="100px">{{pair.0.name}} the {{pair.0.pet_type}}
-                           <p>
-                        {% endif %}
-                        pk {{pair.1}}
-                        <p>
-                      {% endfor %}
+        <!-- Button trigger modal 
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Launch demo modal
+        </button>    
+         -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="search_by_onwer_results" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Search Results:</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                
+                {% if found_owner %}
+                    <table id="search_by_owner_table" style = "text-align: left">
+                    {% if owner.profile_image %}
+                        <tr>
+                            <td>
+                            <img src="{{owner.profile_image.url}}" height="100px">
+                            </td>
+                        
+                    {% else %}
+                        <tr>
+                            <td>
+                                {% load static %}
+                                <img src="{% static "mysite/face.png" %}" alt="Face Icon">
+                            
+                            </td>
+                        
+                
+                    {% endif %}
+                            <td>
+                            <b>{{owner.username}}</b> has the following pets missing:
+                            </td>
+                        </tr>
+                    {% if pets_and_search_party_instance %}
+                        {% for pair in pets_and_search_party_instance%}
+                        
+                            <tr>
+                            {% if pair.0.profile_image %}
+                                <td>
+                                    <img src="{{pair.0.profile_image.url}}" height="100px">
+                                </td>
+                            {% endif %}
+                                <td>
+                                    <a href="{% url 'search_party_flyer' pk=pair.1 %}" >{{pair.0.name}} the {{pair.0.pet_type}}</a> 
+                                </td>
+                            
+                            </tr>
+                            {% endfor %}
+                    </table>
+                    {% else %}
+                        {{owner.username}} doesn't have any search parties for any pets.
+                    {% endif %}
                 {% else %}
-                    {{owner.username}} doesn't have any search parties for any pets.
+                    No results found.
                 {% endif %}
-            {% else %}
-               No results found.
-            {% endif %}
-        </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                
+            </div>
+            </div>
+        </div>
+        </div>
         
        
       </div>
     </div>
 
+{% endblock %}
+
+{% block javascript_after_body_section %}
+    <script>
+    var form_is_bound = "{{form_is_bound}}"
+    if (form_is_bound=="false"){
+    $('#search_by_onwer_results').modal({ show: false})
+    } else {
+
+    $('#search_by_onwer_results').modal('show');
+    }
+    </script>
 {% endblock %}
