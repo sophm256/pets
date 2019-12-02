@@ -6,6 +6,3 @@ def index(request):
    
     return render(request, 'mysite/index.html', {})
 
-def user_profile(request):
-   
-    return render(request, 'mysite/user_profile.html', {})

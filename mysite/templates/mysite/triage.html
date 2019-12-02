@@ -17,9 +17,40 @@
       <div class="col-lg-6 mb-4" style="text-align: center; font-size:100%; background-color:#fff8c6 " >
         
         <h1>Want to help others <br> look for a pet?</h1>
-       
-            <a href="#" class="btn btn-primary">Yes</a>
+            <form method="POST">
+                {% csrf_token %}
+                {% include 'mysite/basic_form.html' with form=form %}
+        
+                <button type="submit" class="btn btn-primary">Look Up</button>
+              
+            </form>
             
+
+            <h2>Results of Search:</h2>
+            {% if found_owner %}
+                Owner Found: 
+                {% if owner.profile_image %}
+                  <img src="{{owner.profile_image.url}}" height="100px">
+                {% endif %}  
+                  {{owner.username}}
+                  <p>
+                  
+                {% if pets_and_search_party_instance %}
+                  {% for pair in pets_and_search_party_instance%}
+                  
+                    Pet 
+                    {% if pair.0.profile_image %}
+                      <img src="{{pair.0.profile_image.url}}" height="100px">{{pair.0.name}} the {{pair.0.pet_type}}
+                      <p>
+                    {% endif %}
+                    pk {{pair.1}}
+                    <p>
+                  {% endfor %}
+                {% else %}
+                  {{owner.username}} doesn't have any search parties for any pets.
+                {% endif %}
+
+            {% endif %}
         </form>
         
        

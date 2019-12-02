@@ -1,23 +1,26 @@
 {% extends 'mysite/base.html' %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        logged in as {{ user }}
 
+     <h1>{{custom_user.username}}'s Profile</h1>
+        
+    {% if custom_user.profile_image %}
         <p>
-        <h1>Your Profile</h1>
-        <ul>
-        {% if user.profile_image %}
-            <li><img src="{{user.profile_image.url}}"></li>
-        {% endif %}
-            <li>username: {{user.username}}</li>
-            <li>first name: {{user.first_name}}</li>
-            <li>last name: {{user.last_name}} </li>
-            <li>email: {{user.email}}</li>
-            <li>phone: {{user.phone}}</li>        
-        </ul>
-    {% else %}
-        <h2>You are Logged Out from your Profile Page</h2>
+        
+        <img src="{{custom_user.profile_image.url}}" height="200px">
+        
     {% endif %}
+    <p>
+    username: {{custom_user.username}}
+    <p>
+    first name: {{custom_user.first_name}}
+    <p>
+    last name: {{custom_user.last_name}} 
+    <p>
+    email: {{custom_user.email}}
+    <p>
+    phone: {{custom_user.phone}}       
+        
+   
     
 {% endblock %}

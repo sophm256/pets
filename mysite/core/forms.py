@@ -5,14 +5,14 @@ from mysite.core.models import CustomUser, Pet
 
 
 class SignUpForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-    last_name = forms.CharField(max_length=30, required=False, help_text='Optional.')
-    email = forms.EmailField(max_length=254, help_text='Required.')
-    phone = forms.CharField(max_length=15, required=False, help_text='Optional.')
-    
+    first_name = forms.CharField(max_length=30, required=False, help_text='Optional')
+    last_name = forms.CharField(max_length=30, required=False, help_text='Optional')
+    email = forms.EmailField(max_length=254, help_text='Required')
+    phone = forms.CharField(max_length=15, required=False, help_text='Optional')
+    profile_image = forms.ImageField(required=False, help_text='Optional')
     class Meta:
         model = CustomUser
-        fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'password1', 'password2')
+        fields = ('username', 'profile_image', 'first_name', 'last_name', 'email', 'phone', 'password1', 'password2')
 
 
 class PetProfileForm(forms.ModelForm):
@@ -33,4 +33,6 @@ class PetProfileForm(forms.ModelForm):
         self.fields["time_last_seen"].input_formats = ['%I:%M %p',]
         self.fields["time_last_seen"].format = '%I:%M %p'
 
-       
+
+class SearchForOwnerForm(forms.Form):
+    search_by_username = forms.CharField(label='Search by Username', max_length = 150)

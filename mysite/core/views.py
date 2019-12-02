@@ -2,8 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from .models import CustomUser, SearchPartyInstance, Pet, SearchPartyMembers
-from mysite.core.forms import SignUpForm, PetProfileForm
-
+from mysite.core.forms import SignUpForm, PetProfileForm, SearchForOwnerForm
+from django.core.exceptions import ObjectDoesNotExist
 
 # @login_required
 # def home(request):
@@ -23,6 +23,11 @@ def signup(request):
     else:
         form = SignUpForm()
     return render(request, 'mysite/signup.html', {'form': form})
+
+@login_required
+def user_profile(request, pk):
+   custom_user = CustomUser.objects.get(pk=pk) 
+   return render(request, 'mysite/user_profile.html', {'custom_user':custom_user})
 
 @login_required
 def pet_profile_form(request):
@@ -48,7 +53,30 @@ def pet_profile_form(request):
 
 @login_required
 def triage(request):
-    return render(request, 'mysite/triage.html', {})
+    if request.method == 'POST':
+        form = SearchForOwnerForm(request.POST)
+        if form.is_valid():
+            
+            username = form.cleaned_data.get('search_by_username')
+            try:
+                
+                custom_user = CustomUser.objects.get(username = username)
+                pets = Pet.objects.filter(owner=custom_user)
+                pets_and_search_party_instance = []
+                for pet in pets:
+                    search_party_instance = SearchPartyInstance.objects.get(owner=custom_user,pet=pet)
+                    pets_and_search_party_instance.append([pet,search_party_instance.pk])
+                form = SearchForOwnerForm()
+            except ObjectDoesNotExist:
+                found_owner = False
+            
+            found_owner = True
+            return render(request, 'mysite/triage.html', {'form': form,'found_owner': found_owner,'owner':custom_user, 'pets_and_search_party_instance':pets_and_search_party_instance })
+    else:
+        form = SearchForOwnerForm()
+        return render(request, 'mysite/triage.html', {'form': form})
+
+   
 
 @login_required
 def search_party_flyer(request, pk):
