@@ -46,17 +46,18 @@ class MapsConsumer(WebsocketConsumer):
         date_time = datetime.datetime.fromtimestamp(js_timestamp)
 
         users_to_lookup = [] 
-        single_or_all_users = "blah"
+        single_or_all_users = ""
+        username = text_data_json['username']
+        custom_user = CustomUser.objects.get(username=username)
+        search_party_instance_id = text_data_json['search_party_instance_id']
+        search_party_instance = SearchPartyInstance.objects.get(pk = search_party_instance_id)
+        membership= SearchPartyMembers.objects.get(member=custom_user, search_party_instance=search_party_instance)
+        
         if (message_type == 'coordinate'):
 
             coord = text_data_json['coord']
             longitude = coord[0]
             latitude = coord[1]
-            
-            username = text_data_json['username']
-            
-            custom_user = CustomUser.objects.get(username=username)
-            membership= SearchPartyMembers.objects.get(member=custom_user)
             
             # Add the coordinate to the TrackingCoord table
             my_point = fromstr(f'POINT({longitude} {latitude})', srid=4326)
@@ -67,19 +68,14 @@ class MapsConsumer(WebsocketConsumer):
             single_or_all_users = "single"
         
         elif (message_type == 'start_tracking' or message_type == 'stop_tracking'):
-            username = text_data_json['username']
-            custom_user = CustomUser.objects.get(username=username)
-            membership= SearchPartyMembers.objects.get(member=custom_user)
-
             if (message_type == 'start_tracking'):
                 start_or_stop_type = 1
             elif (message_type == 'stop_tracking'):
                 start_or_stop_type = 2
             start_stop_time = StartStopTime.objects.create(search_party_member=membership, datetime_start_or_stop=date_time, start_or_stop_type=start_or_stop_type)
             start_stop_time.save()
+        
         elif (message_type == 'get_everyones_paths'):
-            
-            search_party_instance_id = text_data_json['search_party_instance_id']
             search_party_members = SearchPartyMembers.objects.filter(search_party_instance=search_party_instance_id)
             users_to_lookup = [ [membership.member.username , membership]  for membership in search_party_members]
             single_or_all_users = "all_users"

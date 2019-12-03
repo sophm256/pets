@@ -5,7 +5,7 @@ import datetime
 
 class CustomUser(AbstractUser):
     phone = models.CharField(max_length=15, blank=True)
-    profile_image = models.ImageField(upload_to='images', blank=True)
+    profile_image = models.ImageField(upload_to='user_images', blank=True)
 
     REQUIRED_FIELDS = ['email']
 
