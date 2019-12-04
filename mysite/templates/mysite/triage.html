@@ -3,25 +3,28 @@
 {% block content %}
 <div class="row pt-4">
       <!-- left column -->
-      <div class="col-lg-6 mb-4" style="text-align: center; background-color: #dbf8ff ">
+      <div class="col-lg-6 pt-3 text-white" style="text-align: center; background-color: #59ced5 ">
+          
       <!-- page content -->
-      <h1>Lost a Pet?</h1>
+      <h1 class="text-white">Lost a Pet?</h1>
+      <div style="color:#2d3743; font-size: 120%; font-weight: bold">
        You have no current search parties.
-
-       Here are your current search parties:
+      </div>
+       <p>
       
-       <a href="{% url 'pet_profile_form' %}" class="btn btn-primary">Create New Search Party</a>
+       <a href="{% url 'pet_profile_form' %}" class="btn btn-primary mt-4" >Create New Search Party</a>
+          
       </div>
       
       <!-- right column -->
-      <div class="col-lg-6 mb-4" style="text-align: center; font-size:100%; background-color:#fff8c6 " >
+      <div class="col-lg-6 pt-3 "  style="text-align: center; font-size:100%; background-color: #f3c03e; " >
         
-        <h1>Want to help others <br> look for a pet?</h1>
-            <form method="POST">
+        <h1 class=" text-white">Want to help others <br> look for a pet?</h1>
+            <form method="POST" style = "color:#2d3743; font-weight:bold">
                 {% csrf_token %}
                 {% include 'mysite/basic_form.html' with form=form %}
         
-                <button type="submit" class="btn btn-primary">Look Up</button>
+                <button type="submit" class="btn btn-primary mb-4">Look Up</button>
               
             </form>
             
@@ -45,16 +48,16 @@
             <div class="modal-body">
                 
                 {% if found_owner %}
-                    <table id="search_by_owner_table" style = "text-align: left">
+                    <table id="search_by_owner_table" style = "text-align: left; font-size: 120%;" cellspacing="1" cellpadding="10">
                     {% if owner.profile_image %}
                         <tr>
-                            <td>
+                            <td style="border-bottom: 1px solid #ddd;" >
                             <img src="{{owner.profile_image.url}}" height="100px">
                             </td>
                         
                     {% else %}
                         <tr>
-                            <td>
+                            <td style="border-bottom: 1px solid #ddd;">
                                 {% load static %}
                                 <img src="{% static "mysite/face.png" %}" alt="Face Icon">
                             
@@ -62,8 +65,10 @@
                         
                 
                     {% endif %}
-                            <td>
+                            <td style="border-bottom: 1px solid #ddd;">
+                              
                             <b>{{owner.username}}</b> has the following pets missing:
+                            
                             </td>
                         </tr>
                     {% if pets_and_search_party_instance %}
@@ -71,11 +76,11 @@
                         
                             <tr>
                             {% if pair.0.profile_image %}
-                                <td>
+                                <td style="border-bottom: 1px solid #ddd;" >
                                     <img src="{{pair.0.profile_image.url}}" height="100px">
                                 </td>
                             {% endif %}
-                                <td>
+                                <td style="border-bottom: 1px solid #ddd;" >
                                     <a href="{% url 'search_party_flyer' pk=pair.1 %}" >{{pair.0.name}} the {{pair.0.pet_type}}</a> 
                                 </td>
                             

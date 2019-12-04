@@ -35,4 +35,8 @@ class PetProfileForm(forms.ModelForm):
 
 
 class SearchForOwnerForm(forms.Form):
-    search_by_username = forms.CharField(label='Search by Username', max_length = 150)
+    search_by_username = forms.CharField(label = 'Find an Existing Search Party',max_length = 150)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['search_by_username'].widget.attrs.update({'placeholder':"Enter Pet Owner's Username" })
