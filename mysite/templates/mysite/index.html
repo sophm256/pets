@@ -18,7 +18,11 @@
         <p>
 
         <div class="text-center">
-          <a class="btn btn-lg btn-primary" href="#">Get Started</a>
+          {% if user.is_authenticated %}
+            <a class="btn btn-lg btn-primary" href="{% url 'triage' %}">Go to Triage</a>
+          {% else %}
+            <a class="btn btn-lg btn-primary" href="{% url 'signup' %}">Get Started</a>
+          {% endif %}
         </div>
       </div>
     </div>
