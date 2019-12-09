@@ -66,12 +66,13 @@
                                         </td>
                                 {% endif %}
                             
-                                    <td style="border-bottom: 1px solid #ddd;">
-                                        <b>{{owner.username}}</b> has the following pets missing:
-                                    </td>
-                                </tr>
+                                    
                             
                                 {% if pets_and_search_party_instance %}
+                                        <td style="border-bottom: 1px solid #ddd;">
+                                            <b>{{owner.username}}</b> has the following pets missing:
+                                        </td>
+                                    </tr>
                                     {% for pair in pets_and_search_party_instance%}
                                     <tr>
                                         {% if pair.0.profile_image %}
@@ -84,10 +85,14 @@
                                         </td>
                                     </tr>
                                     {% endfor %}
-                            </table>
+                            
                                 {% else %}
-                                    {{owner.username}} doesn't have any search parties for any pets.
+                                    <td style="border-bottom: 1px solid #ddd;">
+                                        <b>{{owner.username}}</b> has no search parties currently.
+                                    </td>
+                                   
                                 {% endif %}
+                                </table>
                             {% else %}
                                 No results found.
                             {% endif %}
@@ -106,17 +111,59 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <h5 class="modal-title" id="exampleModalLabel">Your Search Parties</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  ...
+                 
+                    <table id="see_your_search_parties_table" style = "text-align: left; font-size: 120%;" cellspacing="1" cellpadding="10">
+                        {% if user.profile_image %}
+                            <tr>
+                                <td style="border-bottom: 1px solid #ddd;" >
+                                    <img src="{{user.profile_image.url}}" height="100px">
+                                </td>
+        
+                         {% else %}
+                            <tr>
+                                <td style="border-bottom: 1px solid #ddd;">
+                                    {% load static %}
+                                    <img src="{% static "mysite/face.png" %}" alt="Face Icon">
+            
+                                </td>
+                        {% endif %}
+                                
+                                
+                                
+                        {% if my_pets_and_search_party_instance %}
+                                <td style="border-bottom: 1px solid #ddd;">
+                                    <b>You ({{user.username}}) </b> have the following pets missing:
+                                </td>
+                            </tr>
+
+                                    {% for pair in my_pets_and_search_party_instance%}
+                                    <tr>
+                                        {% if pair.0.profile_image %}
+                                        <td style="border-bottom: 1px solid #ddd;" >
+                                            <img src="{{pair.0.profile_image.url}}" height="100px">
+                                        </td>
+                                        {% endif %}
+                                        <td style="border-bottom: 1px solid #ddd;" >
+                                            <a href="{% url 'search_party_flyer' pk=pair.1 %}" >{{pair.0.name}} the {{pair.0.pet_type}}</a> 
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                        {% else %}
+                            <td style="border-bottom: 1px solid #ddd;">
+                                <b>You ({{user.username}})</b> have no search parties currently.
+                            </td>
+                        {% endif %}
+                    </table>                
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                  
                 </div>
               </div>
             </div>
@@ -130,11 +177,14 @@
 
 {% block javascript_after_body_section %}
     <script>
+    
+   
     var form_is_bound = "{{form_is_bound}}"
     if (form_is_bound=="false"){
+      
     $('#search_by_onwer_results').modal({ show: false})
     } else {
-
+   
     $('#search_by_onwer_results').modal('show');
     }
     </script>

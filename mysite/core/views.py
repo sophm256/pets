@@ -53,6 +53,16 @@ def pet_profile_form(request):
 
 @login_required
 def triage(request):
+    my_username = request.user.username
+    my_custom_user = CustomUser.objects.get(username = my_username)
+    my_pets = Pet.objects.filter(owner=my_custom_user)
+    my_pets_and_search_party_instance =[]
+
+    for my_pet in my_pets:
+        my_search_party_instance = SearchPartyInstance.objects.get(owner=my_custom_user,pet=my_pet)
+        my_pets_and_search_party_instance.append([my_pet, my_search_party_instance.pk])
+    
+
     if request.method == 'POST':
         form = SearchForOwnerForm(request.POST)
         if form.is_valid():
@@ -74,11 +84,11 @@ def triage(request):
                 found_owner = False
             form_is_bound = "true"
             
-            return render(request, 'mysite/triage.html', {'form': form,'found_owner': found_owner,'owner':custom_user, 'pets_and_search_party_instance':pets_and_search_party_instance, 'form_is_bound': form_is_bound })
+            return render(request, 'mysite/triage.html', {'form': form,'found_owner': found_owner,'owner':custom_user, 'pets_and_search_party_instance':pets_and_search_party_instance, 'form_is_bound': form_is_bound, 'my_pets_and_search_party_instance': my_pets_and_search_party_instance })
     else:
         form = SearchForOwnerForm()
         form_is_bound = "false"
-        return render(request, 'mysite/triage.html', {'form': form, 'form_is_bound': form_is_bound})
+        return render(request, 'mysite/triage.html', {'form': form, 'form_is_bound': form_is_bound, 'my_pets_and_search_party_instance': my_pets_and_search_party_instance })
 
    
 
