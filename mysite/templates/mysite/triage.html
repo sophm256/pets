@@ -79,6 +79,11 @@
                                         <td style="border-bottom: 1px solid #ddd;" >
                                             <img src="{{pair.0.profile_image.url}}" height="100px">
                                         </td>
+                                        {% else %}
+                                        <td style="border-bottom: 1px solid #ddd;" >
+                                            <div height="100px" width="100px" style=" background-color: #cccccc">
+                                            </div>
+                                        </td>
                                         {% endif %}
                                         <td style="border-bottom: 1px solid #ddd;" >
                                             <a href="{% url 'search_party_flyer' pk=pair.1 %}" >{{pair.0.name}} the {{pair.0.pet_type}}</a> 
@@ -147,6 +152,11 @@
                                         {% if pair.0.profile_image %}
                                         <td style="border-bottom: 1px solid #ddd;" >
                                             <img src="{{pair.0.profile_image.url}}" height="100px">
+                                        </td>
+                                        {% else %}
+                                        <td style="border-bottom: 1px solid #ddd;" >
+                                            <div height="100px" width="100px" style=" background-color: #cccccc">
+                                            </div>
                                         </td>
                                         {% endif %}
                                         <td style="border-bottom: 1px solid #ddd;" >

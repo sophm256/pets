@@ -12,7 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 def signup(request):
     if request.method == 'POST':
-        form = SignUpForm(request.POST, request.FILES)
+        form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -33,7 +33,7 @@ def user_profile(request, pk):
 def pet_profile_form(request):
     
     if request.method == "POST":
-        form = PetProfileForm(request.POST, request.FILES)
+        form = PetProfileForm(request.POST)
         if form.is_valid():
             pet = form.save(commit=False)
             pet.owner = CustomUser.objects.get(pk=request.user.id)

@@ -9,16 +9,16 @@ class SignUpForm(UserCreationForm):
     last_name = forms.CharField(max_length=30, required=False, help_text='Optional')
     email = forms.EmailField(max_length=254, help_text='Required')
     phone = forms.CharField(max_length=15, required=False, help_text='Optional')
-    profile_image = forms.ImageField(required=False, help_text='Optional')
+    #profile_image = forms.ImageField(required=False, help_text='Optional')
     class Meta:
         model = CustomUser
-        fields = ('username', 'profile_image', 'first_name', 'last_name', 'email', 'phone', 'password1', 'password2')
+        fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'password1', 'password2')
 
 
 class PetProfileForm(forms.ModelForm):
     class Meta:
         model = Pet
-        fields = ('profile_image','name','pet_type', 'remarks', 'date_last_seen', 'time_last_seen', 'last_known_location')
+        fields = ('name','pet_type', 'remarks', 'date_last_seen', 'time_last_seen', 'last_known_location')
         widgets = {
             'remarks': forms.Textarea(
                 attrs={'cols': 50, 'rows': 10, 
