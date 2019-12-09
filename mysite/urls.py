@@ -29,9 +29,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('maps', map_views.mymap_orig, name='mymap'),
-    path('chat', chat_views.index, name='index'),
     path('maps/', include('maps.urls')),
-    path('chat/', include('chat.urls')),
     path('admin/', admin.site.urls),
     path('', views.index, name='home'),
     url(r'^login/$', auth_views.LoginView.as_view(), name='login'),
