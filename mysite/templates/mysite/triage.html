@@ -2,24 +2,24 @@
 
 {% block content %}
 <div class="row pt-4">
-      <!-- left column -->
-      <div class="col-lg-6 pt-3 text-white" style="text-align: center; background-color: #59ced5 ">
+        <!-- left column -->
+        <div class="col-lg-6 pt-3 text-white" style="text-align: center; background-color: #59ced5 ">
           
-      <!-- page content -->
-      <h1 class="text-white">Lost a Pet?</h1>
-      <div style="color:#2d3743; font-size: 120%; font-weight: bold">
-       You have no current search parties.
-      </div>
-       <p>
+            <!-- page content -->
+            <h1 class="text-white">Lost a Pet?</h1>
+            <div style="color:#2d3743; font-size: 120%; font-weight: bold">
+                You have no current search parties.
+            </div>
+            <p>
       
-       <a href="{% url 'pet_profile_form' %}" class="btn btn-primary mt-4" >Create New Search Party</a>
+            <a href="{% url 'pet_profile_form' %}" class="btn btn-primary mt-4" >Create New Search Party</a>
           
-      </div>
+        </div>
       
-      <!-- right column -->
-      <div class="col-lg-6 pt-3 "  style="text-align: center; font-size:100%; background-color: #f3c03e; " >
+        <!-- right column -->
+        <div class="col-lg-6 pt-3 "  style="text-align: center; font-size:100%; background-color: #f3c03e; " >
         
-        <h1 class=" text-white">Want to help others <br> look for a pet?</h1>
+            <h1 class=" text-white">Want to help others <br> look for a pet?</h1>
             <form method="POST" style = "color:#2d3743; font-weight:bold">
                 {% csrf_token %}
                 {% include 'mysite/basic_form.html' with form=form %}
@@ -35,64 +35,60 @@
         </button>    
          -->
 
-        <!-- Modal -->
-        <div class="modal fade" id="search_by_onwer_results" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalLabel">Search Results:</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
+            <!-- Modal -->
+            <div class="modal fade" id="search_by_onwer_results" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="exampleModalLabel">Search Results:</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
                 
-                {% if found_owner %}
-                    <table id="search_by_owner_table" style = "text-align: left; font-size: 120%;" cellspacing="1" cellpadding="10">
-                    {% if owner.profile_image %}
-                        <tr>
-                            <td style="border-bottom: 1px solid #ddd;" >
-                            <img src="{{owner.profile_image.url}}" height="100px">
-                            </td>
+                            {% if found_owner %}
+                                <table id="search_by_owner_table" style = "text-align: left; font-size: 120%;" cellspacing="1" cellpadding="10">
+                                {% if owner.profile_image %}
+                                    <tr>
+                                        <td style="border-bottom: 1px solid #ddd;" >
+                                            <img src="{{owner.profile_image.url}}" height="100px">
+                                        </td>
                         
-                    {% else %}
-                        <tr>
-                            <td style="border-bottom: 1px solid #ddd;">
-                                {% load static %}
-                                <img src="{% static "mysite/face.png" %}" alt="Face Icon">
+                                {% else %}
+                                    <tr>
+                                        <td style="border-bottom: 1px solid #ddd;">
+                                            {% load static %}
+                                            <img src="{% static "mysite/face.png" %}" alt="Face Icon">
                             
-                            </td>
-                        
-                
-                    {% endif %}
-                            <td style="border-bottom: 1px solid #ddd;">
-                              
-                            <b>{{owner.username}}</b> has the following pets missing:
+                                        </td>
+                                {% endif %}
                             
-                            </td>
-                        </tr>
-                    {% if pets_and_search_party_instance %}
-                        {% for pair in pets_and_search_party_instance%}
-                        
-                            <tr>
-                            {% if pair.0.profile_image %}
-                                <td style="border-bottom: 1px solid #ddd;" >
-                                    <img src="{{pair.0.profile_image.url}}" height="100px">
-                                </td>
+                                    <td style="border-bottom: 1px solid #ddd;">
+                                        <b>{{owner.username}}</b> has the following pets missing:
+                                    </td>
+                                </tr>
+                            
+                                {% if pets_and_search_party_instance %}
+                                    {% for pair in pets_and_search_party_instance%}
+                                    <tr>
+                                        {% if pair.0.profile_image %}
+                                        <td style="border-bottom: 1px solid #ddd;" >
+                                            <img src="{{pair.0.profile_image.url}}" height="100px">
+                                        </td>
+                                        {% endif %}
+                                        <td style="border-bottom: 1px solid #ddd;" >
+                                            <a href="{% url 'search_party_flyer' pk=pair.1 %}" >{{pair.0.name}} the {{pair.0.pet_type}}</a> 
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                            </table>
+                                {% else %}
+                                    {{owner.username}} doesn't have any search parties for any pets.
+                                {% endif %}
+                            {% else %}
+                                No results found.
                             {% endif %}
-                                <td style="border-bottom: 1px solid #ddd;" >
-                                    <a href="{% url 'search_party_flyer' pk=pair.1 %}" >{{pair.0.name}} the {{pair.0.pet_type}}</a> 
-                                </td>
-                            
-                            </tr>
-                            {% endfor %}
-                    </table>
-                    {% else %}
-                        {{owner.username}} doesn't have any search parties for any pets.
-                    {% endif %}
-                {% else %}
-                    No results found.
-                {% endif %}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
