@@ -7,15 +7,17 @@
           
             <!-- page content -->
             <h1 class="text-white">Lost a Pet?</h1>
-            <div style="color:#2d3743; font-size: 120%; font-weight: bold">
-                You have no current search parties.
-            </div>
+            
+            <button type="button" class="btn btn-primary mt-4" data-toggle="modal" data-target="#see_your_search_parties_modal">
+                See Your Search Parties
+            </button> 
             <p>
       
             <a href="{% url 'pet_profile_form' %}" class="btn btn-primary mt-4" >Create New Search Party</a>
           
         </div>
-      
+        <!--left column ends-->
+        
         <!-- right column -->
         <div class="col-lg-6 pt-3 "  style="text-align: center; font-size:100%; background-color: #f3c03e; " >
         
@@ -89,17 +91,39 @@
                             {% else %}
                                 No results found.
                             {% endif %}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 
-            </div>
+                </div>
             </div>
         </div>
         </div>
-        
+        <!--Modal ends-->
        
-      </div>
+        <!--See Your Search Parties modal begins-->
+        <div class="modal fade" id="see_your_search_parties_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  ...
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        <!--See Your Search Parties Modals ends-->
+        </div>
+        <!--right column end--> 
     </div>
 
 {% endblock %}
