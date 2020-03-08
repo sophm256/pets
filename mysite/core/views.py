@@ -5,10 +5,6 @@ from .models import CustomUser, SearchPartyInstance, Pet, SearchPartyMembers
 from mysite.core.forms import SignUpForm, PetProfileForm, SearchForOwnerForm
 from django.core.exceptions import ObjectDoesNotExist
 
-# @login_required
-# def home(request):
-#     return render(request, 'home.html')
-
 
 def signup(request):
     if request.method == 'POST':
