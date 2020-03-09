@@ -7,16 +7,6 @@ from django.contrib.gis.geos import fromstr, Point
 import datetime
 
 class MapsConsumer(WebsocketConsumer):
-    #coord_dict ={'alan':[[-87, 43]]}
-    # def __init__(self):
-    #     super().__init__()
-    #     self.coord_dict ={'alan':[[-87, 43]]}
-
-    # def addToDict(self, username, coord):
-    #     if username in self.coord_dict:
-    #         self.coord_dict[username].append(coord)
-    #     else:
-    #         self.coord_dict[username]= [coord]
     
     def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
@@ -88,7 +78,6 @@ class MapsConsumer(WebsocketConsumer):
             tracking_coords = TrackingCoord.objects.filter(search_party_member=membership)
             point_coord = [tracking_coord.my_point.coords for tracking_coord in tracking_coords]
 
-        # self.addToDict(username,coord)
 
             # Send message to room group
             if (message_type == 'coordinate'):
@@ -97,7 +86,6 @@ class MapsConsumer(WebsocketConsumer):
                     {
                         'type': 'chat_message',
                         'username': username,
-                        #'coordinates': self.coord_dict[username]
                         'coordinates': point_coord,
                         'single_or_all_users': single_or_all_users
                     }
@@ -112,13 +100,12 @@ class MapsConsumer(WebsocketConsumer):
     # Receive message from room group
     def chat_message(self, event):
         username = event['username']
-       #coordinates = event['coordinates']
         coordinates = event['coordinates']
         single_or_all_users = event['single_or_all_users']
+        
         # Send message to WebSocket
         self.send(text_data=json.dumps({
             'username': username,
-            #'coordinates': coordinates
             'coordinates': coordinates,
             'single_or_all_users': single_or_all_users
         }))
